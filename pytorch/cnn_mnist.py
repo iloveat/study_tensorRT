@@ -87,7 +87,38 @@ optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.5)
 for i in range(1):
     train(i)
     test()
+    torch.save(model, '../model/torch_%03d.model' % i)
 
 
 weights = model.state_dict()
 print(weights.keys())
+print(weights['fc2.bias'])
+
+
+# load saved model
+# model2 = torch.load('../model/torch_000.model')
+# weights2 = model2.state_dict()
+# print(weights2.keys())
+# print(weights2['fc2.bias'])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
