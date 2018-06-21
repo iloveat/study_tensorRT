@@ -1,10 +1,11 @@
+# -*- coding: utf-8 -*-
 from __future__ import print_function, division
 import torch
-import torch.nn as nn
 import torch.autograd as autograd
 import torch.nn.functional as F
 import torch.optim as optim
 from torchvision import datasets, transforms
+from net_definition import Net
 
 
 torch.cuda.manual_seed(1)
@@ -23,24 +24,6 @@ test_loader = torch.utils.data.DataLoader(
         transforms.Normalize((0.1307,), (0.3081,))
     ])),
     batch_size=64, shuffle=False, num_workers=1, pin_memory=True)
-
-
-class Net(nn.Module):
-    def __init__(self):
-        super(Net, self).__init__()
-        self.conv1 = nn.Conv2d(1, 20, kernel_size=5)
-        self.conv2 = nn.Conv2d(20, 50, kernel_size=5)
-        self.conv2_drop = nn.Dropout2d()
-        self.fc1 = nn.Linear(800, 500)
-        self.fc2 = nn.Linear(500, 10)
-
-    def forward(self, x):
-        x = F.max_pool2d(self.conv1(x), kernel_size=2, stride=2)
-        x = F.max_pool2d(self.conv2(x), kernel_size=2, stride=2)
-        x = x.view(-1, 800)
-        x = F.relu(self.fc1(x))
-        x = self.fc2(x)
-        return F.log_softmax(x)
 
 
 def train(epoch):
