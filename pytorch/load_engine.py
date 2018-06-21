@@ -3,6 +3,7 @@ import torch
 from torchvision import datasets, transforms
 import tensorrt as trt
 import pycuda.driver as cuda
+import pycuda.autoinit
 import numpy as np
 
 
@@ -25,11 +26,13 @@ img, target = next(iter(test_loader))
 img = img.numpy()[0]
 target = target.numpy()[0]
 
+
 # Allocate the memory on the GPU and allocate memory on the CPU to hold results after inference
 # The size of the allocations is the size of the input and expected output * the batch size
 h_input = img.ravel()
 h_output = np.empty(10, dtype=np.float32)
 # allocate device memory
+
 d_input = cuda.mem_alloc(1 * h_input.size * h_input.dtype.itemsize)
 d_output = cuda.mem_alloc(1 * h_output.size * h_output.dtype.itemsize)
 
